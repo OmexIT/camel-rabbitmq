@@ -5,18 +5,4 @@
 
 
 
-    <bean id="myFileProcessor" class="com.example.camelrabbitmq.FileProcessor" />
-
-    <bean id="myPolicy" class="org.apache.camel.impl.ThrottlingInflightRoutePolicy">
-        <!-- define the scope to be context scoped so we measure against total inflight exchanges
-             that means for both route1, route2 and route3 all together -->
-        <property name="scope" value="Context"/>
-        <!-- when we hit > 20 inflight exchanges then kick in and suspend the routes -->
-        <property name="maxInflightExchanges" value="2"/>
-        <!-- when we hit lower than 10% of the max = 2 then kick in and resume the routes
-             the default percentage is 70% but in this demo we want a low value -->
-        <property name="resumePercentOfMax" value="1"/>
-        <!-- output throttling activity at WARN level -->
-        <property name="loggingLevel" value="INFO"/>
-    </bean>
 </beans>
