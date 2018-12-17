@@ -1,0 +1,17 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+    <route id="randomGenerator">
+        <from uri="timer:hello?period=1"/>
+        <transform>
+            <simple>Random number ${random(0,100)}</simple>
+        </transform>
+        <to uri="rabbitmq:foo?queue=bar&amp;exchangeType=direct&amp;autoDelete=false&amp;routingKey=test1"/>
+    </route>
+    <route id="rabbitReader">
+        <from uri="rabbitmq:foo?queue=bar&amp;exchangeType=direct&amp;autoDelete=false&amp;routingKey=test1"/>
+        <throttle timePeriodMillis="1000">
+            <constant>1</constant>
+            <to uri="log:From RabbitMQ: ${body}"/>
+        </throttle>
+        <!--<log message="From RabbitMQ: ${body}"/>-->
+    </route>
+</routes>
